@@ -1,53 +1,412 @@
-document.addEventListener("DOMContentLoaded",()=>{
-let modal=document.querySelector("[data-modal]");
-if(!modal)return;
-let product=null, selected={};
+document.addEventListener("DOMContentLoaded", () => {
 
-function selectedVariant(){
- return product.variants.find(v=>v.options.every((o,i)=>selected[i]===o)) || product.variants[0];
-}
-document.addEventListener("click",e=>{
- let open=e.target.closest("[data-open-product]");
- if(open){
-  product=JSON.parse(document.querySelector(`[data-product-json="${open.dataset.openProduct}"]`).textContent);
-  selected={};
-  modal.hidden=false;
-  modal.querySelector("[data-image]").src=product.image;
-  modal.querySelector("[data-title]").textContent=product.title;
-  modal.querySelector("[data-description]").innerHTML=product.description;
-  let opts=modal.querySelector("[data-options]");
-  opts.innerHTML="";
-  (product.options||[]).forEach((opt,index)=>{
-    let wrap=document.createElement("div");
-    wrap.innerHTML="<label>"+opt.name+"</label>";
-    opt.values.forEach(val=>{
-      let b=document.createElement("button");
-      b.type="button"; b.textContent=val;
-      b.onclick=()=>{selected[index]=val; updatePrice();};
-      wrap.appendChild(b);
+  const modal = document.querySelector(".product-modal");
+
+  if (!modal) return;
+
+
+  const modalImage = modal.querySelector("[data-modal-image]");
+  const modalTitle = modal.querySelector("[data-modal-title]");
+  const modalPrice = modal.querySelector("[data-modal-price]");
+  const modalDescription = modal.querySelector("[data-modal-description]");
+  const modalOptions = modal.querySelector("[data-modal-options]");
+  const addButton = modal.querySelector("[data-add-cart]");
+
+
+  let currentProduct = null;
+  let selectedOptions = {};
+
+
+
+  /*
+    OPEN PRODUCT POPUP
+  */
+
+  document.querySelectorAll("[data-open-product]")
+    .forEach(button => {
+
+
+      button.addEventListener("click", () => {
+
+
+        const card = button.closest(".figma-card");
+
+        const data =
+          card.querySelector(".product-json");
+
+
+        currentProduct =
+          JSON.parse(data.textContent);
+
+
+
+        modalImage.src =
+          currentProduct.image;
+
+
+        modalTitle.textContent =
+          currentProduct.title;
+
+
+        modalDescription.innerHTML =
+          currentProduct.description;
+
+
+
+        renderVariants();
+
+
+        modal.hidden = false;
+
+
+      });
+
+
     });
-    opts.appendChild(wrap);
-  });
-  updatePrice();
- }
- if(e.target.closest("[data-close]")) modal.hidden=true;
- let add=e.target.closest("[data-add]");
- if(add&&product){
-   let v=selectedVariant();
-   fetch("/cart/add.js",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({items:[{id:v.id,quantity:1}]})})
-   .then(()=>{
-    // bonus product if black + medium
-    let isBonus=Object.values(selected).includes("Black") && Object.values(selected).includes("Medium");
-    add.textContent="Added ✓";
-    if(isBonus){
-      // Soft Winter Jacket is searched by title through cart flow only when variant id is configured
-      add.dataset.bonusChecked="true";
+
+
+
+
+
+  /*
+    CLOSE MODAL
+  */
+
+
+  document.querySelectorAll("[data-close-modal]")
+    .forEach(btn => {
+
+
+      btn.addEventListener("click", () => {
+
+        modal.hidden = true;
+
+      });
+
+
+    });
+
+
+
+
+
+
+
+  /*
+    RENDER OPTIONS
+  */
+
+
+  function renderVariants(){
+
+
+    modalOptions.innerHTML = "";
+
+    selectedOptions = {};
+
+
+
+    currentProduct.options.forEach(option => {
+
+
+      const wrapper =
+        document.createElement("div");
+
+
+      wrapper.className =
+        "variant-group";
+
+
+
+      const title =
+        document.createElement("p");
+
+
+      title.textContent =
+        option.name;
+
+
+
+      wrapper.appendChild(title);
+
+
+
+
+      option.values.forEach(value => {
+
+
+        const btn =
+          document.createElement("button");
+
+
+        btn.textContent =
+          value;
+
+
+
+        btn.className =
+          "variant-option";
+
+
+
+        btn.addEventListener("click",()=>{
+
+
+          selectedOptions[option.name] =
+            value;
+
+
+
+          wrapper
+          .querySelectorAll("button")
+          .forEach(b =>
+            b.classList.remove("active")
+          );
+
+
+          btn.classList.add("active");
+
+
+
+          updatePrice();
+
+
+        });
+
+
+
+        wrapper.appendChild(btn);
+
+
+
+      });
+
+
+
+      modalOptions.appendChild(wrapper);
+
+
+
+    });
+
+
+
+    updatePrice();
+
+
+  }
+
+
+
+
+
+
+  /*
+    FIND SELECTED VARIANT
+  */
+
+
+  function getSelectedVariant(){
+
+
+    return currentProduct.variants.find(variant=>{
+
+
+      return Object.keys(selectedOptions)
+      .every((key,index)=>{
+
+
+        const optionIndex =
+          currentProduct.options.find(
+            o=>o.name === key
+          ).position - 1;
+
+
+
+        return (
+          variant.options[optionIndex]
+          === selectedOptions[key]
+        );
+
+
+      });
+
+
+    });
+
+
+  }
+
+
+
+
+
+  function updatePrice(){
+
+
+    const variant =
+      getSelectedVariant();
+
+
+
+    if(variant){
+
+      modalPrice.textContent =
+        formatMoney(
+          variant.price
+        );
+
     }
-   });
- }
-});
-function updatePrice(){
- let v=selectedVariant();
- modal.querySelector("[data-price]").textContent=v.price || v.title;
-}
+
+
+  }
+
+
+
+
+
+
+  /*
+    ADD TO CART
+  */
+
+
+  addButton.addEventListener(
+    "click",
+    async()=>{
+
+
+      const variant =
+        getSelectedVariant();
+
+
+
+      if(!variant){
+
+        alert(
+          "Please select options"
+        );
+
+        return;
+
+      }
+
+
+
+
+      await addItem(
+        variant.id
+      );
+
+
+
+      /*
+        BONUS PRODUCT LOGIC
+
+        Black + Medium
+      */
+
+
+      const hasBlack =
+        selectedOptions.Color === "Black";
+
+
+      const hasMedium =
+        selectedOptions.Size === "Medium";
+
+
+
+      if(
+        hasBlack &&
+        hasMedium
+      ){
+
+        const bonus =
+          window.softWinterJacketVariant;
+
+
+        if(bonus){
+
+          await addItem(bonus);
+
+        }
+
+      }
+
+
+
+
+      addButton.textContent =
+        "ADDED ✓";
+
+
+
+      setTimeout(()=>{
+
+        addButton.textContent =
+          "ADD TO CART →";
+
+      },1500);
+
+
+
+    }
+  );
+
+
+
+
+
+
+
+
+  async function addItem(id){
+
+
+    return fetch(
+      "/cart/add.js",
+      {
+
+        method:"POST",
+
+        headers:{
+          "Content-Type":
+          "application/json"
+        },
+
+
+        body:JSON.stringify({
+
+          items:[
+            {
+              id:id,
+              quantity:1
+            }
+          ]
+
+        })
+
+
+      }
+
+    );
+
+
+  }
+
+
+
+
+
+  function formatMoney(cents){
+
+    return (
+      cents / 100
+    ).toFixed(2)
+    + "€";
+
+  }
+
+
+
 });
