@@ -1,267 +1,313 @@
-/* =============================================================================
-   Tisso Product Grid + Modal styles
-   Scoped under `.tisso-grid` and `.tisso-modal`.
-   ============================================================================= */
+/* =========================
+   TISSO PRODUCT GRID
+========================= */
 
-.tisso-grid {
-  background: #ffffff;
-  padding: 48px 0 64px;
-}
-
-.tisso-grid .page-width {
-  max-width: 1400px;
-  margin: 0 auto;
-  padding: 0 20px;
-}
-
-.tisso-grid__heading {
-  font-family: var(--font-heading-family, Georgia, 'Times New Roman', serif);
-  font-size: 26px;
-  font-weight: 400;
-  margin: 0 0 24px;
-}
-
-.tisso-grid__list {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 4px;
-}
-
-.tisso-grid__item {
-  aspect-ratio: 1 / 1.1;
-}
-
-.tisso-grid__trigger {
-  position: relative;
-  display: block;
+.tisso-product-grid {
   width: 100%;
-  height: 100%;
-  padding: 0;
-  border: 0;
-  background: #f4f4f2;
-  cursor: pointer;
-  overflow: hidden;
-}
-
-.tisso-grid__trigger img,
-.tisso-grid__placeholder {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  display: block;
-}
-
-.tisso-grid__plus {
-  position: absolute;
-  top: 12px;
-  right: 12px;
-  width: 32px;
-  height: 32px;
-  border-radius: 50%;
+  padding: 70px 40px;
   background: #ffffff;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 18px;
-  line-height: 1;
-  color: #1a1a1a;
-  transition: transform 0.2s ease;
 }
 
-.tisso-grid__trigger:hover .tisso-grid__plus,
-.tisso-grid__trigger:focus-visible .tisso-grid__plus {
-  transform: scale(1.1);
+
+.tisso-product-grid__title {
+  font-size: 48px;
+  font-weight: 500;
+  margin: 0 0 50px;
+  color: #111;
 }
 
-@media screen and (min-width: 990px) {
-  .tisso-grid__heading {
-    font-size: 34px;
-    margin-bottom: 32px;
-  }
 
-  .tisso-grid__list {
-    grid-template-columns: repeat(3, 1fr);
-    gap: 6px;
-  }
+
+/* GRID */
+
+.tisso-product-grid__container {
+
+  display:grid;
+
+  grid-template-columns:
+  repeat(3, 1fr);
+
+  gap:24px;
+
 }
 
-/* ---------- Modal ------------------------------------------------------- */
 
-.tisso-modal[hidden] {
-  display: none;
+
+/* CARD */
+
+.tisso-product-card {
+
+  position:relative;
+
 }
+
+
+
+.tisso-product-card__media {
+
+  position:relative;
+
+  overflow:hidden;
+
+}
+
+
+
+.tisso-product-card__image {
+
+  width:100%;
+
+  aspect-ratio:1 / 1;
+
+  object-fit:cover;
+
+  display:block;
+
+}
+
+
+
+/* PLUS BUTTON */
+
+.tisso-product-card__quick-view {
+
+  position:absolute;
+
+  right:20px;
+
+  top:20px;
+
+
+  width:42px;
+
+  height:42px;
+
+
+  border-radius:50%;
+
+  border:none;
+
+  background:white;
+
+  font-size:24px;
+
+  cursor:pointer;
+
+}
+
+
+
+.tisso-product-card__content {
+
+  padding-top:18px;
+
+}
+
+
+
+.tisso-product-card__title {
+
+  font-size:20px;
+
+  font-weight:500;
+
+  margin:0 0 10px;
+
+}
+
+
+
+.tisso-product-card__price {
+
+  font-size:16px;
+
+  margin:0;
+
+}
+
+
+
+
+/* =========================
+   MODAL
+========================= */
+
 
 .tisso-modal {
-  position: fixed;
-  inset: 0;
-  z-index: 1000;
-  display: flex;
-  align-items: flex-end;
-  justify-content: center;
+
+  position:fixed;
+
+  inset:0;
+
+  z-index:9999;
+
 }
+
+
+
+.tisso-modal[hidden] {
+
+  display:none;
+
+}
+
+
 
 .tisso-modal__overlay {
-  position: absolute;
-  inset: 0;
-  background: rgba(0, 0, 0, 0.5);
+
+  position:absolute;
+
+  inset:0;
+
+  background:rgba(0,0,0,.5);
+
 }
 
-.tisso-modal__panel {
-  position: relative;
-  background: #ffffff;
-  width: 100%;
-  max-height: 90vh;
-  overflow-y: auto;
-  border-radius: 12px 12px 0 0;
-  padding: 24px 20px 32px;
+
+
+.tisso-modal__content {
+
+  position:relative;
+
+  z-index:2;
+
+
+  width:min(900px,90%);
+
+  background:white;
+
+
+  margin:5vh auto;
+
+  padding:40px;
+
+
+  display:grid;
+
+  gap:20px;
+
+
 }
+
+
 
 .tisso-modal__close {
-  position: absolute;
-  top: 12px;
-  right: 12px;
-  width: 36px;
-  height: 36px;
-  border: 0;
-  background: #f4f4f2;
-  border-radius: 50%;
-  font-size: 20px;
-  line-height: 1;
-  cursor: pointer;
+
+  position:absolute;
+
+  right:20px;
+
+  top:20px;
+
+
+  border:0;
+
+  background:none;
+
+  font-size:30px;
+
+  cursor:pointer;
+
 }
 
-.tisso-modal__loading {
-  padding: 40px 0;
-  text-align: center;
-  color: #757575;
+
+
+.tisso-modal__image {
+
+  width:300px;
+
+  max-width:100%;
+
 }
 
-.tisso-modal__product {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-}
 
-.tisso-modal__image img {
-  width: 100%;
-  border-radius: 8px;
-  display: block;
-}
 
 .tisso-modal__title {
-  font-size: 22px;
-  margin: 0;
+
+  font-size:32px;
+
 }
+
+
 
 .tisso-modal__price {
-  font-size: 16px;
-  font-weight: 600;
-  margin: 0;
+
+  font-size:20px;
+
+  font-weight:bold;
+
 }
 
-.tisso-modal__price--compare {
-  text-decoration: line-through;
-  color: #757575;
-  font-weight: 400;
-  margin-right: 8px;
+
+
+.tisso-modal__options button {
+
+  margin:5px;
+
+  padding:10px 20px;
+
+  background:white;
+
+  border:1px solid #111;
+
+  cursor:pointer;
+
 }
 
-.tisso-modal__description {
-  font-size: 14px;
-  line-height: 1.5;
-  color: #3d3d3d;
+
+
+.tisso-modal__add {
+
+  background:#111;
+
+  color:white;
+
+  border:0;
+
+  height:50px;
+
+  cursor:pointer;
+
 }
 
-.tisso-modal__option {
-  margin-bottom: 14px;
+
+
+/* MOBILE */
+
+@media(max-width:768px){
+
+
+.tisso-product-grid {
+
+ padding:40px 20px;
+
 }
 
-.tisso-modal__option-label {
-  display: block;
-  font-size: 12px;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.06em;
-  margin-bottom: 8px;
+
+.tisso-product-grid__title {
+
+ font-size:32px;
+
 }
 
-.tisso-modal__option-values {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
+
+.tisso-product-grid__container {
+
+ grid-template-columns:
+
+ repeat(2,1fr);
+
+ gap:15px;
+
 }
 
-.tisso-modal__option-value {
-  padding: 8px 14px;
-  border: 1px solid #d0d0d0;
-  background: #fff;
-  font-size: 13px;
-  cursor: pointer;
+
+.tisso-product-card__title {
+
+ font-size:16px;
+
 }
 
-.tisso-modal__option-value[aria-pressed="true"] {
-  border-color: #1a1a1a;
-  background: #1a1a1a;
-  color: #fff;
-}
 
-.tisso-modal__option-value[disabled] {
-  opacity: 0.35;
-  cursor: not-allowed;
-  text-decoration: line-through;
-}
 
-.tisso-modal__add-to-cart {
-  width: 100%;
-  height: 48px;
-  background: #1a1a1a;
-  color: #fff;
-  border: 0;
-  font-size: 13px;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.06em;
-  cursor: pointer;
-  transition: opacity 0.2s ease;
-}
-
-.tisso-modal__add-to-cart[disabled] {
-  opacity: 0.5;
-  cursor: not-allowed;
-}
-
-.tisso-modal__status {
-  min-height: 20px;
-  font-size: 13px;
-  text-align: center;
-}
-
-.tisso-modal__status[data-state="success"] {
-  color: #1c6b3e;
-}
-
-.tisso-modal__status[data-state="error"] {
-  color: #b3261e;
-}
-
-@media screen and (min-width: 750px) {
-  .tisso-modal {
-    align-items: center;
-  }
-
-  .tisso-modal__panel {
-    max-width: 640px;
-    border-radius: 12px;
-    padding: 32px;
-  }
-
-  .tisso-modal__product {
-    flex-direction: row;
-    gap: 32px;
-  }
-
-  .tisso-modal__image,
-  .tisso-modal__details {
-    flex: 1;
-  }
 }
