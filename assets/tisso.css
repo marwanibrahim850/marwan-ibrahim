@@ -1,24 +1,266 @@
+/* =========================
+   TISSO BANNER
+========================= */
 
-.tisso-banner{background:#f3eee3;color:#1a1a1a}
-.tisso-header{padding:20px 40px;text-align:left}
-.tisso-topbar{display:flex;justify-content:center;gap:24px;align-items:center;padding:14px;background:#f1f0ed}
-.tisso-topbar a,.tisso-btn,.tisso-add{background:#1a1a1a;color:#fff;padding:14px 28px;text-decoration:none;display:inline-flex;gap:12px;transition:.35s}
-.tisso-topbar a:hover,.tisso-btn:hover,.tisso-add:hover{transform:translateY(-3px)}
-.tisso-hero{min-height:650px;display:flex;align-items:center;padding:60px;background-position:center;background-size:cover}
-.tisso-copy{max-width:500px}
-.tisso-copy h1{font-size:64px;margin-bottom:20px}
-.tisso-grid__items{display:grid;grid-template-columns:repeat(3,1fr);gap:30px;padding:50px}
-.tisso-media{position:relative}
-.tisso-media img{width:100%;display:block}
-.tisso-plus{position:absolute;right:15px;top:15px;width:42px;height:42px;border-radius:50%;border:0;cursor:pointer}
-.tisso-modal[hidden]{display:none}
-.tisso-modal{position:fixed;inset:0;background:#0008;z-index:99;display:flex;align-items:center;justify-content:center}
-.tisso-modal-box{background:#fff;padding:30px;max-width:500px;width:90%}
-@media(max-width:749px){
-.tisso-hero{min-height:500px;padding:30px}
-.tisso-copy h1{font-size:42px}
-.tisso-grid__items{grid-template-columns:repeat(2,1fr);padding:20px;gap:15px}
+.tisso-banner {
+  width: 100%;
+  background: #ffffff;
+  overflow: hidden;
 }
 
-.tisso-add:hover span{transform:translateX(5px)}
-.tisso-add span{transition:.3s}
+
+/* TOP BAR */
+
+.tisso-banner__topbar {
+  height: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 40px;
+  border-bottom: 1px solid #e5e5e5;
+  font-size: 14px;
+}
+
+
+.tisso-banner__logo {
+  font-weight: 700;
+  letter-spacing: 1.5px;
+}
+
+
+.tisso-banner__announcement {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 14px;
+}
+
+
+
+/* BUTTONS */
+
+.tisso-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+
+  height: 48px;
+  padding: 0 32px;
+
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 14px;
+
+  transition:
+    transform .25s ease,
+    background .25s ease;
+}
+
+
+.tisso-btn span {
+  transition: transform .25s ease;
+}
+
+
+.tisso-btn:hover {
+  transform: translateY(-2px);
+}
+
+
+.tisso-btn:hover span {
+  transform: translateX(6px);
+}
+
+
+
+.tisso-btn--yellow {
+  background: #f4e64c;
+  color:#111;
+}
+
+
+.tisso-btn--black {
+  background:#111;
+  color:#fff;
+}
+
+
+
+/* HERO */
+
+.tisso-banner__hero {
+
+  min-height: 620px;
+
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+
+  padding:60px 80px;
+
+  background:#f4f1e8;
+}
+
+
+
+.tisso-banner__content {
+
+  width:40%;
+  z-index:2;
+
+}
+
+
+
+.tisso-banner__content h1 {
+
+  font-size:72px;
+  line-height:0.95;
+  margin:0 0 30px;
+
+  font-weight:700;
+
+}
+
+
+
+.tisso-banner__description {
+
+  font-size:18px;
+  line-height:1.6;
+
+  max-width:420px;
+
+  margin-bottom:40px;
+
+}
+
+
+
+.tisso-banner__image {
+
+  width:55%;
+
+}
+
+
+
+.tisso-banner__image img {
+
+  width:100%;
+  height:auto;
+  display:block;
+
+}
+
+
+
+/* FOOTER BAR */
+
+
+.tisso-banner__footer {
+
+  background:#f2f2ef;
+
+  text-align:center;
+
+  padding:18px;
+
+  font-size:13px;
+
+  letter-spacing:.4px;
+
+}
+
+
+
+/* =========================
+   MOBILE
+========================= */
+
+
+@media(max-width:768px){
+
+
+.tisso-banner__topbar {
+
+  height:60px;
+  padding:0 20px;
+
+}
+
+
+.tisso-banner__announcement {
+
+ display:none;
+
+}
+
+
+
+.tisso-banner__hero {
+
+ flex-direction:column;
+
+ padding:40px 20px;
+
+ min-height:auto;
+
+}
+
+
+
+.tisso-banner__content {
+
+ width:100%;
+
+ text-align:center;
+
+}
+
+
+.tisso-banner__content h1 {
+
+ font-size:48px;
+
+}
+
+
+
+.tisso-banner__description {
+
+ font-size:16px;
+
+ margin-left:auto;
+ margin-right:auto;
+
+}
+
+
+.tisso-banner__image {
+
+ width:100%;
+
+ margin-top:40px;
+
+}
+
+
+.tisso-btn {
+
+ width:100%;
+
+}
+
+
+.tisso-banner__footer {
+
+ font-size:11px;
+
+ padding:16px 12px;
+
+}
+
+
+}
