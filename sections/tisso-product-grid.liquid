@@ -28,7 +28,7 @@
 -%}
 
 {{ 'tisso-product-grid.css' | asset_url | stylesheet_tag }}
-
+<script src="{{ 'tisso-product-grid.js' | asset_url }}" defer></script>
 <section
   class="tisso-grid"
   id="tisso-grid-{{ section.id }}"
