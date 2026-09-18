@@ -1,0 +1,83 @@
+<section class="tisso-banner">
+  <div class="tisso-banner__top">
+    <p>{{ section.settings.top_text }}</p>
+    <a href="{{ section.settings.top_button_link }}">
+      {{ section.settings.top_button_text }}
+    </a>
+  </div>
+
+  <div class="tisso-banner__content">
+    <h1>{{ section.settings.heading }}</h1>
+
+    <div class="tisso-banner__description">
+      {{ section.settings.description }}
+    </div>
+
+    <a class="tisso-banner__button" href="{{ section.settings.button_link }}">
+      {{ section.settings.button_text }}
+    </a>
+  </div>
+
+  <div class="tisso-banner__bottom">
+    {{ section.settings.bottom_text }}
+  </div>
+</section>
+
+
+{% schema %}
+{
+  "name": "Tisso Banner",
+  "settings": [
+    {
+      "type": "text",
+      "id": "top_text",
+      "label": "Top text",
+      "default": "Find the ideal gift for your loved ones."
+    },
+    {
+      "type": "text",
+      "id": "top_button_text",
+      "label": "Top button",
+      "default": "Choose gift"
+    },
+    {
+      "type": "url",
+      "id": "top_button_link",
+      "label": "Top button link"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "The Gift Guide"
+    },
+    {
+      "type": "richtext",
+      "id": "description",
+      "label": "Description"
+    },
+    {
+      "type": "text",
+      "id": "button_text",
+      "label": "Button text",
+      "default": "Shop now"
+    },
+    {
+      "type": "url",
+      "id": "button_link",
+      "label": "Button link"
+    },
+    {
+      "type": "text",
+      "id": "bottom_text",
+      "label": "Bottom text",
+      "default": "Sustainable, ethically made clothes in sizes XXS to 6XL"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Tisso Banner"
+    }
+  ]
+}
+{% endschema %}
