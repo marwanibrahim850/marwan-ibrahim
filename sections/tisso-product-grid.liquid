@@ -1,0 +1,131 @@
+{% comment %}
+  Tisso Product Grid Section
+  ---------------------------------------------------------------------------
+  Renders exactly six product blocks (max_blocks: 6), each backed by a real
+  Shopify product picker -- nothing here is hardcoded. Clicking a card's "+"
+  opens a shared modal (markup at the bottom of this file) that JS populates
+  from the block's embedded product JSON: no extra network round-trip is
+  needed since Dawn themes already render section data server-side.
+
+  Bonus-product logic:
+  The "Soft Winter Jacket" bonus product is resolved two ways, in order:
+    1. The merchant-selected `bonus_product` setting (preferred - explicit,
+       no guessing).
+    2. A fallback lookup by handle ('soft-winter-jacket') for stores that
+       haven't set it yet, so the required behavior still works out of the
+       box if a product with that handle exists.
+  The resolved product (with all its variants) is serialized once into a
+  data attribute on the section wrapper; assets/tisso-product-grid.js reads
+  it to decide, entirely client-side, whether a just-added variant qualifies
+  as "Black + Medium" and to add the correct bonus variant id.
+{% endcomment %}
+
+{%- liquid
+  assign bonus_product = section.settings.bonus_product
+  unless bonus_product
+    assign bonus_product = all_products['soft-winter-jacket']
+  endunless
+-%}
+
+{{ 'tisso-product-grid.css' | asset_url | stylesheet_tag }}
+
+<section
+  class="tisso-grid"
+  id="tisso-grid-{{ section.id }}"
+  data-tisso-grid
+  {%- if bonus_product and bonus_product.available -%}
+    data-bonus-product='{{ bonus_product | json }}'
+  {%- endif -%}
+>
+  <div class="page-width">
+    {%- if section.settings.heading != blank -%}
+      <h2 class="tisso-grid__heading">{{ section.settings.heading }}</h2>
+    {%- endif -%}
+
+    <div class="tisso-grid__list">
+      {%- for block in section.blocks -%}
+        {%- assign product = block.settings.product -%}
+        {%- if product -%}
+          <div class="tisso-grid__item" {{ block.shopify_attributes }}>
+            <button
+              type="button"
+              class="tisso-grid__trigger"
+              data-tisso-open-modal
+              data-product-id="{{ product.id }}"
+              aria-haspopup="dialog"
+              aria-controls="tisso-product-modal-{{ section.id }}"
+              aria-label="Quick view {{ product.title | escape }}"
+            >
+              {%- if product.featured_image -%}
+                <img
+                  src="{{ product.featured_image | image_url: width: 800 }}"
+                  srcset="{{ product.featured_image | image_url: width: 400 }} 400w, {{ product.featured_image | image_url: width: 800 }} 800w"
+                  sizes="(min-width: 990px) 33vw, 50vw"
+                  alt="{{ product.featured_image.alt | default: product.title | escape }}"
+                  loading="lazy"
+                  width="{{ product.featured_image.width }}"
+                  height="{{ product.featured_image.height }}"
+                >
+              {%- else -%}
+                {{ 'product-1' | placeholder_svg_tag: 'tisso-grid__placeholder' }}
+              {%- endif -%}
+              <span class="tisso-grid__plus" aria-hidden="true">+</span>
+            </button>
+
+            {%- comment -%}
+              Full product payload embedded server-side so the modal can be
+              populated instantly, with no extra AJAX fetch.
+            {%- endcomment -%}
+            <script type="application/json" data-tisso-product-json="{{ product.id }}">
+              {{ product | json }}
+            </script>
+          </div>
+        {%- endif -%}
+      {%- endfor -%}
+    </div>
+  </div>
+
+  {%- render 'tisso-product-modal', section: section -%}
+</section>
+
+<script src="{{ 'tisso-product-grid.js' | asset_url }}" defer="defer"></script>
+
+{% schema %}
+{
+  "name": "Tisso Product Grid",
+  "tag": "section",
+  "class": "tisso-grid-section",
+  "settings": [
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Tisso vison in the wild" },
+    {
+      "type": "product",
+      "id": "bonus_product",
+      "label": "Bonus product",
+      "info": "Automatically added to cart when a customer adds a Black + Medium variant. Leave blank to auto-detect a product with the handle 'soft-winter-jacket'."
+    }
+  ],
+  "blocks": [
+    {
+      "type": "product",
+      "name": "Product",
+      "settings": [
+        { "type": "product", "id": "product", "label": "Product" }
+      ]
+    }
+  ],
+  "max_blocks": 6,
+  "presets": [
+    {
+      "name": "Tisso Product Grid",
+      "blocks": [
+        { "type": "product" },
+        { "type": "product" },
+        { "type": "product" },
+        { "type": "product" },
+        { "type": "product" },
+        { "type": "product" }
+      ]
+    }
+  ]
+}
+{% endschema %}

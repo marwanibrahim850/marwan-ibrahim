@@ -1,0 +1,32 @@
+{% comment %}
+  tisso-product-modal.liquid
+  ---------------------------------------------------------------------------
+  A single shared modal shell per grid section. All product-specific content
+  (title, price, images, options, variants, Add to Cart) is injected by
+  assets/tisso-product-grid.js when a grid card is opened -- nothing product-
+  specific is rendered here so there's exactly one modal in the DOM
+  regardless of how many products are in the grid.
+{% endcomment %}
+
+<div
+  class="tisso-modal"
+  id="tisso-product-modal-{{ section.id }}"
+  data-tisso-modal
+  role="dialog"
+  aria-modal="true"
+  aria-labelledby="tisso-modal-title-{{ section.id }}"
+  hidden
+>
+  <div class="tisso-modal__overlay" data-tisso-close-modal tabindex="-1"></div>
+
+  <div class="tisso-modal__panel" role="document">
+    <button type="button" class="tisso-modal__close" data-tisso-close-modal aria-label="Close product details">
+      &times;
+    </button>
+
+    <div class="tisso-modal__body" data-tisso-modal-body>
+      <!-- Populated dynamically by JS -->
+      <div class="tisso-modal__loading">Loading&hellip;</div>
+    </div>
+  </div>
+</div>
