@@ -1,63 +1,211 @@
-<section class="tisso-grid" data-tisso-grid>
-  <h2>{{ section.settings.heading }}</h2>
-  <div class="tisso-grid__items">
+<section class="figma-grid" data-product-grid>
+
+  {% if section.settings.heading != blank %}
+    <h2 class="figma-grid__title">
+      {{ section.settings.heading }}
+    </h2>
+  {% endif %}
+
+
+  <div class="figma-grid__container">
+
     {% for block in section.blocks %}
-      {% assign p = block.settings.product %}
-      {% if p %}
-      <article class="tisso-card">
-        <div class="tisso-media">
-          {{ p.featured_image | image_url: width:700 | image_tag: loading:'lazy' }}
-          <button class="tisso-plus" type="button" data-open-product="{{ p.id }}">+</button>
+
+      {% assign product = block.settings.product %}
+
+      {% if product != blank %}
+
+        <div 
+          class="figma-card"
+          data-product-id="{{ product.id }}"
+          data-product-handle="{{ product.handle }}"
+        >
+
+
+          <div class="figma-card__image">
+
+
+            <img
+              src="{{ product.featured_image | image_url: width:800 }}"
+              alt="{{ product.title }}"
+              loading="lazy"
+            >
+
+
+            <button
+              class="figma-card__plus"
+              data-open-product
+              type="button"
+            >
+              +
+            </button>
+
+
+          </div>
+
+
+
+          <h3 class="figma-card__title">
+            {{ product.title }}
+          </h3>
+
+
+          <p class="figma-card__price">
+            {{ product.price | money }}
+          </p>
+
+
+
+          <script type="application/json" class="product-json">
+
+          {
+            "id": {{ product.id }},
+            "title": {{ product.title | json }},
+            "description": {{ product.description | json }},
+            "image": "{{ product.featured_image | image_url: width:800 }}",
+            "variants": {{ product.variants | json }},
+            "options": {{ product.options_with_values | json }}
+          }
+
+          </script>
+
+
         </div>
-        <h3>{{ p.title }}</h3>
-        <p>{{ p.price | money }}</p>
-        <script type="application/json" data-product-json="{{ p.id }}">
-        {
-          "id": {{ p.id | json }},
-          "title": {{ p.title | json }},
-          "description": {{ p.description | json }},
-          "image": {{ p.featured_image | image_url: width:900 | json }},
-          "variants": [
-          {% for v in p.variants %}
-            {
-              "id": {{v.id|json}},
-              "title": {{v.title|json}},
-              "available": {{v.available|json}},
-              "price": {{v.price | money | json}},
-              "options": {{v.options|json}}
-            }{% unless forloop.last %},{% endunless %}
-          {% endfor %}
-          ],
-          "options": {{ p.options_with_values | json }}
-        }
-        </script>
-      </article>
+
+
       {% endif %}
+
+
     {% endfor %}
+
+
   </div>
 
-  <div class="tisso-modal" hidden data-modal>
-    <div class="tisso-modal-overlay" data-close></div>
-    <div class="tisso-modal-box">
-      <button type="button" data-close>×</button>
-      <img data-image>
-      <h2 data-title></h2>
-      <p data-price></p>
-      <div data-description></div>
-      <div data-options></div>
-      <button class="tisso-add" data-add>Add to cart →</button>
-      <p data-status></p>
+
+
+
+  <!-- PRODUCT POPUP -->
+
+  <div class="product-modal" hidden>
+
+    <div class="product-modal__overlay" data-close-modal></div>
+
+
+    <div class="product-modal__box">
+
+
+      <button 
+        class="product-modal__close"
+        data-close-modal
+      >
+        ×
+      </button>
+
+
+
+      <img
+        class="product-modal__image"
+        data-modal-image
+      >
+
+
+      <h2 data-modal-title></h2>
+
+
+      <div 
+        class="product-modal__price"
+        data-modal-price
+      ></div>
+
+
+
+      <div 
+        class="product-modal__description"
+        data-modal-description
+      ></div>
+
+
+
+      <div 
+        class="product-modal__options"
+        data-modal-options
+      ></div>
+
+
+
+      <button
+        class="product-modal__add"
+        data-add-cart
+      >
+        ADD TO CART →
+      </button>
+
+
     </div>
+
   </div>
+
+
 </section>
-{{ 'tisso.js' | asset_url | script_tag }}
-{{ 'tisso.css' | asset_url | stylesheet_tag }}
+
+
 
 {% schema %}
 {
-"name":"Figma Product Grid",
-"blocks":[{"type":"product","name":"Product","settings":[{"type":"product","id":"product","label":"Product"}]}],
-"settings":[{"type":"text","id":"heading","label":"Heading","default":"Tisso vison in the wild"}],
-"presets":[{"name":"Figma Product Grid","blocks":[{"type":"product"},{"type":"product"},{"type":"product"},{"type":"product"},{"type":"product"},{"type":"product"}]}]
+  "name": "Figma Product Grid",
+
+  "settings": [
+    {
+      "type":"text",
+      "id":"heading",
+      "label":"Heading",
+      "default":"Tisso vison in the wild"
+    }
+  ],
+
+
+  "blocks":[
+    {
+      "type":"product",
+      "name":"Product",
+
+      "settings":[
+        {
+          "type":"product",
+          "id":"product",
+          "label":"Select product"
+        }
+      ]
+    }
+  ],
+
+
+  "presets":[
+    {
+      "name":"Figma Product Grid",
+
+      "blocks":[
+        {
+          "type":"product"
+        },
+        {
+          "type":"product"
+        },
+        {
+          "type":"product"
+        },
+        {
+          "type":"product"
+        },
+        {
+          "type":"product"
+        },
+        {
+          "type":"product"
+        }
+      ]
+    }
+  ]
+
 }
 {% endschema %}
