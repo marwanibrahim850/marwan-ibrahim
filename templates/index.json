@@ -1,0 +1,20 @@
+{
+  "sections": {
+    "tisso_banner": {
+      "type": "tisso-banner",
+      "settings": {}
+    },
+    "tisso_grid": {
+      "type": "figma-product-grid",
+      "blocks": {},
+      "block_order": [],
+      "settings": {
+        "heading": "Tisso vison in the wild"
+      }
+    }
+  },
+  "order": [
+    "tisso_banner",
+    "tisso_grid"
+  ]
+}

@@ -1,0 +1,63 @@
+<section class="tisso-grid" data-tisso-grid>
+  <h2>{{ section.settings.heading }}</h2>
+  <div class="tisso-grid__items">
+    {% for block in section.blocks %}
+      {% assign p = block.settings.product %}
+      {% if p %}
+      <article class="tisso-card">
+        <div class="tisso-media">
+          {{ p.featured_image | image_url: width:700 | image_tag: loading:'lazy' }}
+          <button class="tisso-plus" type="button" data-open-product="{{ p.id }}">+</button>
+        </div>
+        <h3>{{ p.title }}</h3>
+        <p>{{ p.price | money }}</p>
+        <script type="application/json" data-product-json="{{ p.id }}">
+        {
+          "id": {{ p.id | json }},
+          "title": {{ p.title | json }},
+          "description": {{ p.description | json }},
+          "image": {{ p.featured_image | image_url: width:900 | json }},
+          "variants": [
+          {% for v in p.variants %}
+            {
+              "id": {{v.id|json}},
+              "title": {{v.title|json}},
+              "available": {{v.available|json}},
+              "price": {{v.price | money | json}},
+              "options": {{v.options|json}}
+            }{% unless forloop.last %},{% endunless %}
+          {% endfor %}
+          ],
+          "options": {{ p.options_with_values | json }}
+        }
+        </script>
+      </article>
+      {% endif %}
+    {% endfor %}
+  </div>
+
+  <div class="tisso-modal" hidden data-modal>
+    <div class="tisso-modal-overlay" data-close></div>
+    <div class="tisso-modal-box">
+      <button type="button" data-close>×</button>
+      <img data-image>
+      <h2 data-title></h2>
+      <p data-price></p>
+      <div data-description></div>
+      <div data-options></div>
+      <button class="tisso-add" data-add>Add to cart →</button>
+      <p data-status></p>
+    </div>
+  </div>
+</section>
+{{ 'tisso.js' | asset_url | script_tag }}
+{{ 'tisso.css' | asset_url | stylesheet_tag }}
+
+{% schema %}
+{
+"name":"Figma Product Grid",
+"blocks":[{"type":"product","name":"Product","settings":[{"type":"product","id":"product","label":"Product"}]}],
+"settings":[{"type":"text","id":"heading","label":"Heading","default":"Tisso vison in the wild"}],
+"presets":[{"name":"Figma Product Grid","blocks":[{"type":"product"},{"type":"product"},{"type":"product"},{"type":"product"},{"type":"product"},{"type":"product"}]}]
+}
+{% endschema %}

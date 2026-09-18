@@ -1,0 +1,24 @@
+
+.tisso-banner{background:#f3eee3;color:#1a1a1a}
+.tisso-header{padding:20px 40px;text-align:left}
+.tisso-topbar{display:flex;justify-content:center;gap:24px;align-items:center;padding:14px;background:#f1f0ed}
+.tisso-topbar a,.tisso-btn,.tisso-add{background:#1a1a1a;color:#fff;padding:14px 28px;text-decoration:none;display:inline-flex;gap:12px;transition:.35s}
+.tisso-topbar a:hover,.tisso-btn:hover,.tisso-add:hover{transform:translateY(-3px)}
+.tisso-hero{min-height:650px;display:flex;align-items:center;padding:60px;background-position:center;background-size:cover}
+.tisso-copy{max-width:500px}
+.tisso-copy h1{font-size:64px;margin-bottom:20px}
+.tisso-grid__items{display:grid;grid-template-columns:repeat(3,1fr);gap:30px;padding:50px}
+.tisso-media{position:relative}
+.tisso-media img{width:100%;display:block}
+.tisso-plus{position:absolute;right:15px;top:15px;width:42px;height:42px;border-radius:50%;border:0;cursor:pointer}
+.tisso-modal[hidden]{display:none}
+.tisso-modal{position:fixed;inset:0;background:#0008;z-index:99;display:flex;align-items:center;justify-content:center}
+.tisso-modal-box{background:#fff;padding:30px;max-width:500px;width:90%}
+@media(max-width:749px){
+.tisso-hero{min-height:500px;padding:30px}
+.tisso-copy h1{font-size:42px}
+.tisso-grid__items{grid-template-columns:repeat(2,1fr);padding:20px;gap:15px}
+}
+
+.tisso-add:hover span{transform:translateX(5px)}
+.tisso-add span{transition:.3s}
